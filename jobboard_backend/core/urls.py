@@ -22,8 +22,36 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+# Imports for Swagger endpoint documentation
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
+    # jobs, categories and applications API's
+    path('api/jobs/', include('jobs.urls')),
+    path('api/jobs/', include('jobs.urls')),
+    path('api/categories/', include('categories.urls')),
+    path('api/applications/', include('applications.urls')),
+
+]
+
+# Code for Swagger endpoints 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Job Board API",
+      default_version='v1',
+      description="Jameson API documentation for the Job Board platform backend",
+      contact=openapi.Contact(email="jamesonpillay@gmail.com"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
+
+urlpatterns += [
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
