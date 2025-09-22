@@ -1,0 +1,54 @@
+[
+  {
+    "model": "users.User",
+    "pk": 1,
+    "fields": {
+      "username": "admin",
+      "is_superuser": true,
+      "is_staff": true,
+      "password": "623010",
+      "email": "jamesonpillay@gmail.com"
+    }
+  },
+  {
+    "model": "users.User",
+    "pk": 2,
+    "fields": {
+      "username": "user1",
+      "email": "user1@example.com",
+      "password": "pbkdf2_sha256$600000$test$Zg==",
+      "role": "user"
+    }
+  },
+  {
+    "model": "categories.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Engineering"
+    }
+  },
+  {
+    "model": "jobs.Job",
+    "pk": 1,
+    "fields": {
+      "title": "Backend Developer",
+      "description": "Build APIs and services.",
+      "location": "Remote",
+      "job_type": "full-time",
+      "category": 1,
+      "created_by": 1,
+      "created_at": "2025-09-20T10:00:00Z"
+    }
+  },
+  {
+    "model": "applications.Application",
+    "pk": 1,
+    "fields": {
+      "job": 1,
+      "applicant": 2,
+      "resume": "https://example.com/resume.pdf",
+      "status": "pending",
+      "applied_at": "2025-09-20T10:00:00Z"
+    }
+  }
+]
