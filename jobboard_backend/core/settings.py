@@ -171,7 +171,18 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True # Allow all origins for development
+CORS_ALLOW_CREDENTIALS = True # Allow cookies to be sent in cross-origin requests
+
+# CSRF (for local dev)
+CSRF_COOKIE_SECURE = False # Relax CSRF: Set to True in production if using HTTPS
+SESSION_COOKIE_SECURE = False # Set to True in production if using HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 # In production, specify allowed origins:
 # CORS_ALLOWED_ORIGINS = [
 #     "https://yourdomain.com",
