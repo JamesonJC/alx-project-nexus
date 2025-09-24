@@ -16,10 +16,10 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 sh '''
-                $PYTHON -m venv $VENV_DIR
-                source $VENV_DIR/bin/activate
+                ${PYTHON} -m venv ${VENV_DIR}
+                . ${VENV_DIR}/bin/activate
                 pip install --upgrade pip
-                pip install -r requirements.txt
+                pip install -r jobboard_backend/requirements.txt
                 '''
             }
         }
@@ -27,7 +27,8 @@ pipeline {
         stage('Run Migrations') {
             steps {
                 sh '''
-                source $VENV_DIR/bin/activate
+                source ${VENV_DIR}/bin/activate
+                cd jobboard_backend
                 python manage.py migrate
                 '''
             }
@@ -36,7 +37,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                source $VENV_DIR/bin/activate
+                source ${VENV_DIR}/bin/activate
+                cd jobboard_backend
                 python manage.py test
                 '''
             }
@@ -57,13 +59,13 @@ pipeline {
         //    }
         //}
 
-        //post {
-        //    success {
-        //        echo 'Pipeline completed successfully!'
-        //    }
-        //    failure {
-        //        echo 'Pipeline failed. Please check the logs.'
-        //    }}
-        //}
+        post {
+            success {
+                echo 'Pipeline completed successfully!'
+            }
+            failure {
+                echo 'Pipeline failed. Please check the logs.'
+            }
+        }
     }
 }
