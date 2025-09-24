@@ -1,67 +1,69 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         VENV_DIR = 'venv'
         PYTHON = 'python3'
     }
 
-    stage('Clone Repo') {
-        stage {
+    stages {
+        stage('Clone Repo') {
+        steps {
             git branch: 'main', url: 'https://github.com/jamesonJC/alx-project-nexus.git'
+            }
         }
-    }
 
-    stage('Setup Python Environment') {
-        step {
-            sh '''
-            $PYTHON -m venv $VENV_DIR
-            source $VENV_DIR/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            '''
+        stage('Setup Python Environment') {
+            steps {
+                sh '''
+                $PYTHON -m venv $VENV_DIR
+                source $VENV_DIR/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
+            }
         }
-    }
 
-    stage('Run Migrations') {
-        step {
-            sh '''
-            source $VENV_DIR/bin/activate
-            python manage.py migrate
-            '''
+        stage('Run Migrations') {
+            steps {
+                sh '''
+                source $VENV_DIR/bin/activate
+                python manage.py migrate
+                '''
+            }
         }
-    }
 
-    stage('Run Tests') {
-        step {
-            sh '''
-            source $VENV_DIR/bin/activate
-            python manage.py test
-            '''
+        stage('Run Tests') {
+            steps {
+                sh '''
+                source $VENV_DIR/bin/activate
+                python manage.py test
+                '''
+            }
         }
+
+        // Deployment stage
+        //stage('Deploy to Production') {
+        //    step {
+        //        sh '''
+        //        echo "Deploying application..."
+        //        When {
+        //            branch 'main'
+        //        }
+        //        Steps {
+        //            sh 'echo Deploying to production server...'
+        //            // You can SSH into a server, or trigger Render deployment webhook
+        //       '''
+        //    }
+        //}
+
+        //post {
+        //    success {
+        //        echo 'Pipeline completed successfully!'
+        //    }
+        //    failure {
+        //        echo 'Pipeline failed. Please check the logs.'
+        //    }
+        //}
     }
-
-    // Deployment stage
-    //stage('Deploy to Production') {
-    //    step {
-    //        sh '''
-    //        echo "Deploying application..."
-    //        When {
-    //            branch 'main'
-    //        }
-    //        Steps {
-    //            sh 'echo Deploying to production server...'
-    //            // You can SSH into a server, or trigger Render deployment webhook
-    //       '''
-    //    }
-    //}
-
-    //post {
-    //    success {
-    //        echo 'Pipeline completed successfully!'
-    //    }
-    //    failure {
-    //        echo 'Pipeline failed. Please check the logs.'
-    //    }
-    //}
 }
