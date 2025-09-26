@@ -9,6 +9,14 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+# Third-party imports for environment variables and database URL parsing (in production)
+import dj_database_url
+from decouple import config
+
+# assign env vars to variables with defaults for development
+DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = config('SECRET_KEY')
+
 # -------------------------------------------------------------------
 # BASE DIRECTORY
 # -------------------------------------------------------------------
@@ -19,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------------------------------------
 SECRET_KEY = "django-insecure-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  # ❗Replace with env var in prod
 
-DEBUG = True  # 🔴 Change to False in production
+DEBUG = True  # Change to False in production
 
-ALLOWED_HOSTS = []  # ✅ Add domain/IP for production e.g. ['yourdomain.com', '127.0.0.1']
+ALLOWED_HOSTS = ['*']  # Add domain/IP for production e.g. ['yourdomain.com', '127.0.0.1'](Render URL)
 
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Only needed if using HTTPS in local dev
@@ -56,12 +64,14 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 # -------------------------------------------------------------------
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static files in production
+
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware", # Handles user authentication
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -100,8 +110,9 @@ WSGI_APPLICATION = "core.wsgi.application"
 # -------------------------------------------------------------------
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'default': dj_database_url.config(default=config('DATABASE_URL')),
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -142,6 +153,7 @@ USE_TZ = True
 # STATIC FILES
 # -------------------------------------------------------------------
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For production use with collectstatic
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY FIELD TYPE
@@ -188,3 +200,6 @@ CSRF_TRUSTED_ORIGINS = [
 #     "https://yourdomain.com",
 #     "http://localhost:3000", # frontend runs on this port
 # ]
+
+# to suppress collectstatic errors
+#WHITENOISE_AUTOREFRESH = True
