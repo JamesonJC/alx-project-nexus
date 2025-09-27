@@ -11,7 +11,7 @@ A Django-based backend API for a Job Board platform with role-based access contr
 - Admin can manage everything
 - Swagger API docs at `/api/docs`
 
-## Tech Stack
+## Tech Stack Used
 
 - Django + Django REST Framework
 - PostgreSQL
