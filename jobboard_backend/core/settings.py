@@ -110,9 +110,10 @@ AUTH_USER_MODEL = 'users.User'
 # DATABASE Configuration (SQLite for development)
 # -------------------------------------------------------------------
 DATABASES = {
-    "default": dj_database_url.config(
-        default=config('DATABASE_URL'),
+    'default': dj_database_url.parse(
+        'postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@turntable.proxy.rlwy.net:11730/railway',
         conn_max_age=600,
+        ssl_require=True,
     )
 }
 
