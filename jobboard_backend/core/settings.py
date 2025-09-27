@@ -110,7 +110,9 @@ WSGI_APPLICATION = "core.wsgi.application"
 # -------------------------------------------------------------------
 DATABASES = {
     "default": {
-        'default': dj_database_url.config(default=config('DATABASE_URL')),
+        # 'default': dj_database_url.config(default=config('DATABASE_URL')),
+        postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@containers-us-west-85.railway.app:5432/railway
+
         # "ENGINE": "django.db.backends.sqlite3",
         # "NAME": BASE_DIR / "db.sqlite3",
     }
