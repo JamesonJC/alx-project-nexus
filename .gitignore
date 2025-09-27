@@ -1,0 +1,11 @@
+# Jenkins
+Jenkinsfile
+jenkins.war
+.jenkins/
+build/
+target/
+workspace/
+logs/
+*.log
+*.tmp
+*.bak
