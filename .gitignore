@@ -1,3 +1,6 @@
+# Virtual environments
+venv/
+jobboard_backend/venv/
 # Jenkins
 Jenkinsfile
 jenkins.war
