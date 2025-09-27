@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------------------------------------
 # SECURITY SETTINGS
 # -------------------------------------------------------------------
-SECRET_KEY = "django-insecure-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  # ❗Replace with env var in prod
+SECRET_KEY = "-insecurdjangoe-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  # ❗Replace with env var in prod
 
 DEBUG = True  # Change to False in production
 
