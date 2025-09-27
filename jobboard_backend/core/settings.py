@@ -111,7 +111,11 @@ AUTH_USER_MODEL = 'users.User'
 # -------------------------------------------------------------------
 DATABASES = {
     "default": {
-        'default': dj_database_url.config(default=config('DATABASE_URL')),
+        'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        engine='django.db.backends.postgresql'
+    
         #postgresql://username:password@host:port/dbname,
         # "ENGINE": "django.db.backends.sqlite3",
         # "NAME": BASE_DIR / "db.sqlite3",
