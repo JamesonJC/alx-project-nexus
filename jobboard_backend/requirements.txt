@@ -7,4 +7,6 @@ rest_framework_simplejwt==0.0.2
 django-cors-headers==4.3.1
 psycopg2-binary==2.9.10
 gunicorn==20.1.0
+whitenoise==6.6.0
+
 # force rebuild
