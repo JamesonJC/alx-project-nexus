@@ -1,0 +1,12 @@
+# Ignore virtual environments
+venv
+.venv
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore local DBs or logs
+db.sqlite3
+*.log
