@@ -111,7 +111,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     "default": {
         'default': dj_database_url.config(default=config('DATABASE_URL')),
-        postgresql://username:password@host:port/dbname,
+        #postgresql://username:password@host:port/dbname,
         # "ENGINE": "django.db.backends.sqlite3",
         # "NAME": BASE_DIR / "db.sqlite3",
     }
