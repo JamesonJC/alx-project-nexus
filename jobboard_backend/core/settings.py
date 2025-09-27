@@ -110,7 +110,6 @@ AUTH_USER_MODEL = 'users.User'
 # DATABASE Configuration (SQLite for development)
 # -------------------------------------------------------------------
 DATABASES = {
-DATABASES = {
     "default": dj_database_url.config(
         default=config('DATABASE_URL'),
         conn_max_age=600,
