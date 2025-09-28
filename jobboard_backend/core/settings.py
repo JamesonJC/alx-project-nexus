@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------------------------------------
 SECRET_KEY = "-insecurdjangoe-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  # ❗Replace with env var in prod
 
-DEBUG = True  # Change to False in production
+DEBUG = False  # Change to False in production
 
 ALLOWED_HOSTS = ['*']  # Add domain/IP for production e.g. ['yourdomain.com', '127.0.0.1'](Render URL)
 
@@ -107,7 +107,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 AUTH_USER_MODEL = 'users.User'
 
 # -------------------------------------------------------------------
-# DATABASE Configuration (SQLite for development)
+# DATABASE Configuration
 # -------------------------------------------------------------------
 DATABASES = {
     'default': dj_database_url.parse(
@@ -187,22 +187,24 @@ SIMPLE_JWT = {
 }
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = True # Allow all origins for development
-CORS_ALLOW_CREDENTIALS = True # Allow cookies to be sent in cross-origin requests
+#CORS_ALLOW_ALL_ORIGINS = True # Allow all origins for development
+#CORS_ALLOW_CREDENTIALS = True # Allow cookies to be sent in cross-origin requests
 
 # CSRF (for local dev)
-CSRF_COOKIE_SECURE = False # Relax CSRF: Set to True in production if using HTTPS
-SESSION_COOKIE_SECURE = False # Set to True in production if using HTTPS
+CSRF_COOKIE_SECURE = True # Relax CSRF: Set to True in production if using HTTPS
+SESSION_COOKIE_SECURE = True # Set to True in production if using HTTPS
 CSRF_TRUSTED_ORIGINS = [
-    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
     "http://localhost:8000",
+    "https://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://127.0.0.1:8000",
+    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
 ]
 # In production, specify allowed origins:
-# CORS_ALLOWED_ORIGINS = [
-#     "https://yourdomain.com",
-#     "http://localhost:3000", # frontend runs on this port
-# ]
+ CORS_ALLOWED_ORIGINS = [
+     "https://https://alx-project-nexus-production-6c5b.up.railway.app/",
+     "http://localhost:3000", # frontend runs on this port
+ ]
 
 # to suppress collectstatic errors
-#WHITENOISE_AUTOREFRESH = True
+WHITENOISE_AUTOREFRESH = True
