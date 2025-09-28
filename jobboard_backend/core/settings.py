@@ -201,7 +201,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
 ]
 # In production, specify allowed origins:
- CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     "http://alx-project-nexus-production-6c5b.up.railway.app",
     "https://https://alx-project-nexus-production-6c5b.up.railway.app/",
     "http://localhost:3000", # frontend runs on this port
