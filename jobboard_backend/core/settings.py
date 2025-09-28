@@ -128,6 +128,12 @@ DATABASES = {
 # Set ENGINE
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
+# For seeding data
+FIXTURE_DIRS = [
+    BASE_DIR / "jobboard_backend" / "fixtures"
+]
+
+
 # -------------------------------------------------------------------
 # DATABASE CONFIG FOR PRODUCTION (PostgreSQL) use(.env vars in prod)
 # -------------------------------------------------------------------

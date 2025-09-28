@@ -1,0 +1,64 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "username": "john_doe",
+      "password": "pbkdf2_sha256$600000$examplehash$Yx6nRRhONM3VRNENqKX6v3tZyHqO9QfPIxoygQDLt5k=",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "role": "user"
+    }
+  },
+  {
+    "model": "categories.category",
+    "pk": 1,
+    "fields": {
+      "name": "Engineering"
+    }
+  },
+  {
+    "model": "categories.category",
+    "pk": 2,
+    "fields": {
+      "name": "Design"
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 1,
+    "fields": {
+      "title": "Senior Backend Engineer",
+      "description": "Build and maintain backend services using Django.",
+      "location": "Remote",
+      "job_type": "full-time",
+      "category": 1,
+      "created_by": 1,
+      "created_at": "2025-09-26T12:00:00Z"
+    }
+  },
+  {
+    "model": "applications.application",
+    "pk": 1,
+    "fields": {
+      "job": 1,
+      "applicant": 1,
+      "resume": "Experienced backend developer with a strong track record.",
+      "status": "pending",
+      "applied_at": "2025-09-27T09:00:00Z"
+    }
+  },
+  {
+    "model": "applications.application",
+    "pk": 2,
+    "fields": {
+      "job": 1,
+      "applicant": 1,
+      "resume": "Skilled Django developer eager to contribute to modern backend systems.",
+      "status": "reviewed",
+      "applied_at": "2025-09-27T12:30:00Z"
+    }
+  }
+]
+
