@@ -37,7 +37,19 @@ schema_view = get_schema_view(
    ),
    public=True,
    permission_classes=[permissions.AllowAny],
+   url="https://alx-project-nexus-production-6c5b.up.railway.app",
 )
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),

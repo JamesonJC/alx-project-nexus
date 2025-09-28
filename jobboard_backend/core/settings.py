@@ -33,7 +33,8 @@ ALLOWED_HOSTS = [
     ".railway.app",  # wildcard for any Railway subdomain
     "alx-project-nexus-production-6c5b.up.railway.app",
     "localhost",
-    "127.0.0.1",]
+    "127.0.0.1",
+    ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://localhost:8000",  # Only needed if using HTTPS in local dev
@@ -62,6 +63,9 @@ INSTALLED_APPS = [
     "jobs",
     "categories",
     "applications",
+
+    # Static files handling for erd models
+    'django_extensions'
 ]
 
 # -------------------------------------------------------------------
