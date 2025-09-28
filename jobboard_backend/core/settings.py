@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     "applications",
 
     # Static files handling for erd models
-    'django_extensions'
+    #'django_extensions' turned off to reduce memory usage on Railway
 ]
 
 # -------------------------------------------------------------------
