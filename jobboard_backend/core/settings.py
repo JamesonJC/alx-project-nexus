@@ -11,13 +11,13 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -------------------------------------------------------------------
-# ENVIRONMENT VARIABLES
+# ENVIRONMENT
 # -------------------------------------------------------------------
-DEBUG = config('DEBUG', default=False, cast=bool)
-SECRET_KEY = config('SECRET_KEY', default='insecure-key-for-dev')  # Load securely in production
+DEBUG = config("DEBUG", default=False, cast=bool)
+SECRET_KEY = config("SECRET_KEY", default="django-insecure-replace-me")
 
 # -------------------------------------------------------------------
-# ALLOWED HOSTS / CSRF
+# ALLOWED HOSTS / CORS / CSRF
 # -------------------------------------------------------------------
 ALLOWED_HOSTS = [
     ".railway.app",
@@ -31,14 +31,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://localhost:8000",
-    "https://127.0.0.1:8000",
-    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://alx-project-nexus-production-6c5b.up.railway.app",
-    "http://localhost:3000",  # React frontend (dev)
+    "http://localhost:3000",
 ]
 
 # -------------------------------------------------------------------
@@ -69,7 +66,7 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 # -------------------------------------------------------------------
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # Static file support
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -85,7 +82,22 @@ MIDDLEWARE = [
 # -------------------------------------------------------------------
 ROOT_URLCONF = "core.urls"
 WSGI_APPLICATION = "core.wsgi.application"
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
+
+# -------------------------------------------------------------------
+# DATABASE
+# -------------------------------------------------------------------
+DATABASES = {
+    "default": dj_database_url.parse(
+        config(
+            "DATABASE_URL",
+            default="postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@turntable.proxy.rlwy.net:11730/railway"
+        ),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
 
 # -------------------------------------------------------------------
 # TEMPLATES
@@ -98,29 +110,12 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
-                "django.template.context_processors.request",
+                "django.template.context_processors.request",  # Required by admin
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
     },
-]
-
-# -------------------------------------------------------------------
-# DATABASE
-# -------------------------------------------------------------------
-DATABASES = {
-    'default': dj_database_url.parse(
-        'postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@turntable.proxy.rlwy.net:11730/railway',
-        conn_max_age=600,
-        ssl_require=True,
-    )
-}
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
-
-# Optional: fixture dir for loaddata
-FIXTURE_DIRS = [
-    BASE_DIR / "jobboard_backend" / "fixtures"
 ]
 
 # -------------------------------------------------------------------
@@ -134,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # -------------------------------------------------------------------
-# TIME & LANGUAGE
+# TIMEZONE / LANGUAGE
 # -------------------------------------------------------------------
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -144,12 +139,12 @@ USE_TZ = True
 # -------------------------------------------------------------------
 # STATIC FILES
 # -------------------------------------------------------------------
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-WHITENOISE_AUTOREFRESH = True  # Suppress collectstatic errors in Railway
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+WHITENOISE_AUTOREFRESH = True
 
 # -------------------------------------------------------------------
-# DEFAULT PRIMARY KEY FIELD TYPE
+# PRIMARY KEY
 # -------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -174,7 +169,17 @@ SIMPLE_JWT = {
 }
 
 # -------------------------------------------------------------------
-# SECURITY HEADERS
+# FIXTURES (for loaddata)
+# -------------------------------------------------------------------
+FIXTURE_DIRS = [
+    BASE_DIR / "jobboard_backend" / "fixtures",
+]
+
+# -------------------------------------------------------------------
+# SECURITY HEADERS (Required for Admin login to work securely)
 # -------------------------------------------------------------------
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "SAMEORIGIN"  # Required for Django Admin
