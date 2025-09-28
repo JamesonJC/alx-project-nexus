@@ -202,8 +202,9 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 # In production, specify allowed origins:
  CORS_ALLOWED_ORIGINS = [
-     "https://https://alx-project-nexus-production-6c5b.up.railway.app/",
-     "http://localhost:3000", # frontend runs on this port
+    "http://alx-project-nexus-production-6c5b.up.railway.app",
+    "https://https://alx-project-nexus-production-6c5b.up.railway.app/",
+    "http://localhost:3000", # frontend runs on this port
  ]
 
 # to suppress collectstatic errors
