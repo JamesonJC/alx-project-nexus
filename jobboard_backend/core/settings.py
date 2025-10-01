@@ -208,8 +208,8 @@ SIMPLE_JWT = {
 CSRF_COOKIE_SECURE = True # Relax CSRF: Set to True in production if using HTTPS
 SESSION_COOKIE_SECURE = True # Set to True in production if using HTTPS
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    "https://localhost:8000",
+    "http://localhost:5173",
+    "https://localhost:5173",
     "http://127.0.0.1:8000",
     "https://127.0.0.1:8000",
     "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
@@ -218,7 +218,10 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     "http://alx-project-nexus-production-6c5b.up.railway.app",
     "https://alx-project-nexus-production-6c5b.up.railway.app",
-    "http://localhost:3000", # frontend runs on this port
+    "http://localhost:5173",  # frontend Vite
+    "https://localhost:5173",  # Vite
+    "http://localhost:3000", # frontend react
+    "http://localhost:3000",
  ]
 
 # to suppress collectstatic errors
