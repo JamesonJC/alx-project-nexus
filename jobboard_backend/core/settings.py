@@ -213,9 +213,12 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://127.0.0.1:8000",
     "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
+    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev"
 ]
 # In production, specify allowed origins:
 CORS_ALLOWED_ORIGINS = [
+    "http://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev", # GitHub Codespaces frontend
+    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev",
     "http://alx-project-nexus-production-6c5b.up.railway.app",
     "https://alx-project-nexus-production-6c5b.up.railway.app",
     "http://localhost:5173",  # frontend Vite
