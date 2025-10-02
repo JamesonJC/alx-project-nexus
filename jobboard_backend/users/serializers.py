@@ -17,10 +17,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-    validated_data.pop('password2')
-    user = User.objects.create_user(
-        username=validated_data['username'],
-        email=validated_data['email'],
-        password=validated_data['password']
-    )
-    return user
+        validated_data.pop('password2')
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        return user
