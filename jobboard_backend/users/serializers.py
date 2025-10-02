@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+import logging
+logger = logging.getLogger(__name__)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -17,10 +19,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password2')
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-        return user
+        try:
+            validated_data.pop('password2')
+            username = validated_data.get('username')
+            email = validated_data.get('email')
+            password = validated_data.get('password')
+
+            if not all([username, email, password]):
+                raise serializers.ValidationError("Missing required fields.")
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            return user
+        except Exception as e:
+            logger.error(f"Registration error: {e}")
+            raise serializers.ValidationError(f"Registration failed: {str(e)}")
