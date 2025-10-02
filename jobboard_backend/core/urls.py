@@ -58,6 +58,7 @@ urlpatterns = [
 
     # jobs, categories and applications API's
     path('', include('jobs.urls')),
+    path('api/', include('users.urls')),
     path('api/jobs/', include('jobs.urls')),
     path('api/categories/', include('categories.urls')),
     path('api/applications/', include('applications.urls')),
