@@ -13,7 +13,6 @@ inflection==0.5.1
 msgpack==1.1.1
 packaging==25.0
 psycopg2-binary==2.9.10
-pygraphviz==1.14
 PyJWT==2.10.1
 python-decouple==3.8
 pytz==2025.2
