@@ -74,12 +74,20 @@ INSTALLED_APPS = [
 # -------------------------------------------------------------------
 ASGI_APPLICATION = "core.asgi.application"
 
+# -------------------------------------------------------------------
 # Channels layer configuration (using in-memory channel layer for simplicity)
+# -------------------------------------------------------------------
+REDIS_URL = os.environ.get("REDIS_URL", "redis://default:OojdUSQgneNOAPSmXQAfqXMsCWTMSKCv@shortline.proxy.rlwy.net:35440/0")
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],  # Redis server configuration (if using Redis)
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [REDIS_URL],
         },
     },
 }
