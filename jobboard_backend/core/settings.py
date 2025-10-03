@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
+    "channels",
 
     # Local apps
     "users",
@@ -67,6 +68,21 @@ INSTALLED_APPS = [
     # Static files handling for erd models
     #'django_extensions' turned off to reduce memory usage on Railway
 ]
+
+# -------------------------------------------------------------------
+# ASGI APPLICATION (for real-time features)
+# -------------------------------------------------------------------
+ASGI_APPLICATION = "core.asgi.application"
+
+# Channels layer configuration (using in-memory channel layer for simplicity)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],  # Redis server configuration (if using Redis)
+        },
+    },
+}
 
 # -------------------------------------------------------------------
 # MIDDLEWARE
