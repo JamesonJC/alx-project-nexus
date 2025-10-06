@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------------------------------------
 # SECURITY SETTINGS
 # -------------------------------------------------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY") #"-insecurdjangoe-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  
+#SECRET_KEY = os.environ.get("SECRET_KEY") #"-insecurdjangoe-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  
 
 DEBUG = False  # Change to False in production
 
@@ -77,7 +77,8 @@ ASGI_APPLICATION = "core.asgi.application"
 # -------------------------------------------------------------------
 # Channels layer configuration (using in-memory channel layer for simplicity)
 # -------------------------------------------------------------------
-REDIS_URL = os.environ.get("REDIS_URL") # , "redis://default:OojdUSQgneNOAPSmXQAfqXMsCWTMSKCv@shortline.proxy.rlwy.net:35440/0")
+
+REDIS_URL = config("REDIS_URL")  # Reads REDIS_URL from environment variable
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['json']

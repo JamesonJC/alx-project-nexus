@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from categories.models import Category
 
-# Create your models here.
 class Job(models.Model):
     JOB_TYPES = (
         ('full-time', 'Full-Time'),
@@ -20,4 +19,13 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
-        
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None  # Check if job is new before saving
+        super().save(*args, **kwargs)
+
+        if is_new:
+            # Import the Celery task
+            from .tasks import notify_new_job
+            # Trigger background notification when a new job is created
+            notify_new_job.delay(self.id)
