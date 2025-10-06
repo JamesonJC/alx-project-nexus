@@ -144,7 +144,7 @@ AUTH_USER_MODEL = 'users.User'
 # -------------------------------------------------------------------
 DATABASES = {
     'default': dj_database_url.parse(
-        'postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@turntable.proxy.rlwy.net:11730/railway',
+        config('DATABASE_URL'), # Securely load from .env
         conn_max_age=600,
         ssl_require=True,
     )
