@@ -119,7 +119,7 @@ ASGI_APPLICATION = "core.asgi.application"  # for Channels
 # -------------------------------------------------------------------
 DATABASES = {
     'default': dj_database_url.parse(
-        config('DATABASE_URL'),
+         config('DATABASE_URL', default='postgresql://postgres:DpotxWXkftzRwmwKDMJzhkowFKjoelGk@postgres.railway.internal:5432/railway'),
         conn_max_age=600,
         ssl_require=True,
     )
