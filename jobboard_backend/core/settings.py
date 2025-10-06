@@ -9,13 +9,8 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
-# Third-party imports for environment variables and database URL parsing (in production)
-import dj_database_url
 from decouple import config
-
-# assign env vars to variables with defaults for development
-DEBUG = config('DEBUG', default=False, cast=bool)
-SECRET_KEY = config('SECRET_KEY')
+import dj_database_url
 
 # -------------------------------------------------------------------
 # BASE DIRECTORY
@@ -25,26 +20,46 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -------------------------------------------------------------------
 # SECURITY SETTINGS
 # -------------------------------------------------------------------
-#SECRET_KEY = os.environ.get("SECRET_KEY") #"-insecurdjangoe-1(lig&v^j^v7@@lsg+pwts#l5-at4a1ofx3=$rju13-jw+izru"  
-
-DEBUG = False  # Change to False in production
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
-    ".railway.app",  # wildcard for any Railway subdomain
+    ".railway.app",
     "alx-project-nexus-production-6c5b.up.railway.app",
     "localhost",
     "127.0.0.1",
-    ]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://localhost:8000",  # Only needed if using HTTPS in local dev
 ]
 
 # -------------------------------------------------------------------
-# INSTALLED APPS
+# CSRF & CORS
+# -------------------------------------------------------------------
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://localhost:5173",
+    "http://127.0.0.1:8000",
+    "https://127.0.0.1:8000",
+    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
+    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev",
+    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev",
+    "http://alx-project-nexus-production-6c5b.up.railway.app",
+    "https://alx-project-nexus-production-6c5b.up.railway.app",
+    "http://localhost:5173",
+    "https://localhost:5173",
+    "http://localhost:3000",
+]
+
+# -------------------------------------------------------------------
+# APPLICATION DEFINITION
 # -------------------------------------------------------------------
 INSTALLED_APPS = [
-    # Django core apps
+    # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -64,63 +79,26 @@ INSTALLED_APPS = [
     "jobs",
     "categories",
     "applications",
-
-    # Static files handling for erd models
-    #'django_extensions' turned off to reduce memory usage on Railway
 ]
 
-# -------------------------------------------------------------------
-# ASGI APPLICATION (for real-time features)
-# -------------------------------------------------------------------
-ASGI_APPLICATION = "core.asgi.application"
-
-# -------------------------------------------------------------------
-# Channels layer configuration (using in-memory channel layer for simplicity)
-# -------------------------------------------------------------------
-
-REDIS_URL = config("REDIS_URL")  # Reads REDIS_URL from environment variable
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [REDIS_URL],
-        },
-    },
-}
-
-# -------------------------------------------------------------------
-# MIDDLEWARE
-# -------------------------------------------------------------------
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Serve static files in production
-
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware", # Handles user authentication
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# -------------------------------------------------------------------
-# URL CONFIGURATION
-# -------------------------------------------------------------------
 ROOT_URLCONF = "core.urls"
 
-# -------------------------------------------------------------------
-# TEMPLATES
-# -------------------------------------------------------------------
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # Add 'templates' directory here if you use custom HTML templates
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -133,45 +111,46 @@ TEMPLATES = [
     },
 ]
 
-# -------------------------------------------------------------------
-# WSGI APPLICATION
-# -------------------------------------------------------------------
 WSGI_APPLICATION = "core.wsgi.application"
-AUTH_USER_MODEL = 'users.User'
+ASGI_APPLICATION = "core.asgi.application"  # for Channels
 
 # -------------------------------------------------------------------
-# DATABASE Configuration
+# DATABASE
 # -------------------------------------------------------------------
 DATABASES = {
     'default': dj_database_url.parse(
-        config('DATABASE_URL'), # Securely load from .env
+        config('DATABASE_URL'),
         conn_max_age=600,
         ssl_require=True,
     )
 }
-
-# Set ENGINE
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
-# For seeding data
-FIXTURE_DIRS = [
-    BASE_DIR / "jobboard_backend" / "fixtures"
-]
+# -------------------------------------------------------------------
+# REDIS / CHANNELS / CELERY
+# -------------------------------------------------------------------
+REDIS_URL = config("REDIS_URL")
 
+# Channels (WebSocket support)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [REDIS_URL],
+        },
+    },
+}
+
+# Celery (task queue)
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 # -------------------------------------------------------------------
-# DATABASE CONFIG FOR PRODUCTION (PostgreSQL) use(.env vars in prod)
+# AUTH
 # -------------------------------------------------------------------
-# "ENGINE": "django.db.backends.postgresql",
-# "NAME": "your_db_name",
-# "USER": "your_db_user",
-# "PASSWORD": "your_db_password",
-# "HOST": "localhost",
-# "PORT": "5432",
-
-# -------------------------------------------------------------------
-# AUTHENTICATION
-# -------------------------------------------------------------------
+AUTH_USER_MODEL = 'users.User'
 
 # -------------------------------------------------------------------
 # PASSWORD VALIDATION
@@ -184,26 +163,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # -------------------------------------------------------------------
-# INTERNATIONALIZATION
-# -------------------------------------------------------------------
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
-USE_I18N = True
-USE_TZ = True
-
-# -------------------------------------------------------------------
-# STATIC FILES
-# -------------------------------------------------------------------
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For production use with collectstatic
-
-# -------------------------------------------------------------------
-# DEFAULT PRIMARY KEY FIELD TYPE
-# -------------------------------------------------------------------
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# -------------------------------------------------------------------
-# REST FRAMEWORK SETTINGS
+# REST FRAMEWORK
 # -------------------------------------------------------------------
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -225,32 +185,29 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-# CORS
-#CORS_ALLOW_ALL_ORIGINS = True # Allow all origins for development
-#CORS_ALLOW_CREDENTIALS = True # Allow cookies to be sent in cross-origin requests
+# -------------------------------------------------------------------
+# STATIC FILES
+# -------------------------------------------------------------------
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+WHITENOISE_AUTOREFRESH = True  # Helpful in dev or for suppressing collectstatic errors
 
-# CSRF (for local dev)
-CSRF_COOKIE_SECURE = True # Relax CSRF: Set to True in production if using HTTPS
-SESSION_COOKIE_SECURE = True # Set to True in production if using HTTPS
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "https://localhost:5173",
-    "http://127.0.0.1:8000",
-    "https://127.0.0.1:8000",
-    "https://reimagined-acorn-w9w7qq455xjh5xq6-8000.app.github.dev",
-    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev"
+# -------------------------------------------------------------------
+# FIXTURE DIRS
+# -------------------------------------------------------------------
+FIXTURE_DIRS = [
+    BASE_DIR / "jobboard_backend" / "fixtures"
 ]
-# In production, specify allowed origins:
-CORS_ALLOWED_ORIGINS = [
-    "http://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev", # GitHub Codespaces frontend
-    "https://orange-space-fiesta-pgxr556wpgg3rvww-5173.app.github.dev",
-    "http://alx-project-nexus-production-6c5b.up.railway.app",
-    "https://alx-project-nexus-production-6c5b.up.railway.app",
-    "http://localhost:5173",  # frontend Vite
-    "https://localhost:5173",  # Vite
-    "http://localhost:3000", # frontend react
-    "http://localhost:3000",
- ]
 
-# to suppress collectstatic errors
-WHITENOISE_AUTOREFRESH = True
+# -------------------------------------------------------------------
+# INTERNATIONALIZATION
+# -------------------------------------------------------------------
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
+
+# -------------------------------------------------------------------
+# DEFAULT PRIMARY KEY FIELD TYPE
+# -------------------------------------------------------------------
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
